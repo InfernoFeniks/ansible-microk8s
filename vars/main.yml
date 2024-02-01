@@ -1,0 +1,44 @@
+---
+# vars file for microk8s
+microk8s_user_name: microk8s
+
+# version for install microK8S
+microk8s_version: "1.29/stable"
+# Creat config file on local machine
+microk8s_replace_my_config: false
+# Path for config file on local machine
+microk8s_local_config_path: "~/.kube/config"
+# External FQDN
+microk8s_external_fqdn: ""
+
+# Configuring Add-ons
+microk8s_dns_resolvers: 8.8.8.8,77.88.8.8 # DNS addresses
+microk8s_plugins:
+  dns: "{{ microk8s_dns_resolvers }}"     # CoreDNS
+  host-access: false                      # Allow Pods connecting to Host services smoothly
+  ingress: false                          # Ingress controller for external access
+  metrics-server: true                    # K8s Metrics Server for API access to service metrics
+  rbac: false                             # Role-Based Access Control for authorisation
+  hostpath-storage: false                 # Storage class; allocates storage from host directory
+  dashboard: false                        # The Kubernetes dashboard
+  ambassador: false                       # Ambassador API Gateway and Ingress
+  community: false                         # (core) The community addons repository
+  cilium: false                           # SDN, fast with full network policy
+  fluentd: false                          # Elasticsearch-Fluentd-Kibana logging and monitoring
+  gpu: false                              # Automatic enablement of Nvidia CUDA
+  helm: true                              # Helm 2 - the package manager for Kubernetes
+  helm3: true                             # Helm 3 - Kubernetes package manager
+  istio: false                            # Core Istio service mesh services
+  jaeger: false                           # Kubernetes Jaeger operator with its simple config
+  knative: false                          # The Knative framework on Kubernetes.
+  kubeflow: false                         # Kubeflow for easy ML deployments
+  linkerd: false                          # Linkerd is a service mesh for Kubernetes and other frameworks
+  metallb: false                          # Loadbalancer for your Kubernetes cluster
+  multus: false                           # Multus CNI enables attaching multiple network interfaces to pods
+  observability: false                      # Prometheus operator for monitoring and logging
+  traefik: false                          # another ingress
+  portainer: false                        # Container management dashboard
+  keda: false                             # Kubernetes Event-driven Autoscaling operator.
+  kata: false                             # A secure container runtime with lightweight virtual machines
+  openebs: false                          # openebs storage
+  openfaas: false                         # serverless

@@ -1,0 +1,17 @@
+---
+- name: SYSTEM | Prepare OS
+  ansible.builtin.include_tasks: prepare.yml
+  tags: prepare
+
+- name: SYSTEM | Install Microk8s
+  ansible.builtin.include_tasks: install.yml
+  tags: install
+
+- name: MICROK8S | Microk8s configured
+  ansible.builtin.include_tasks: configure.yml
+  tags: confirure
+
+- name: MICROK8S | Microk8s get info
+  ansible.builtin.include_tasks: getinfo.yml
+  when: microk8s_replace_my_config
+  tags: getinfo

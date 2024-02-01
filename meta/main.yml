@@ -1,0 +1,30 @@
+galaxy_info:
+  role_name: microk8s
+  namespace: infernofeniks
+  author: Maxim Kuzin
+  company: InfernoFeniks
+  description: Role for installation and managing MicroK8S
+
+  license: MIT
+
+  min_ansible_version: "2.16"
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+        - bullseye
+        - buster
+    - name: Ubuntu
+      versions:
+        - jammy
+        - focal
+        - bionic
+
+  galaxy_tags:
+    - mikrok8s
+    - Kubernetes
+    - k8s
+    - development
+
+dependencies: []

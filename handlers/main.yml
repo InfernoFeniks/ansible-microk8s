@@ -1,0 +1,11 @@
+---
+# handlers file for microk8s
+- name: Refresh certificates
+  become: true
+  ansible.builtin.shell: "/snap/bin/microk8s refresh-certs --cert ca.crt"
+  args:
+    executable: "{{ ansible_user_shell }}"
+  register: microk8s_cert
+  changed_when: false
+  failed_when:
+    - microk8s_cert.rc != 0

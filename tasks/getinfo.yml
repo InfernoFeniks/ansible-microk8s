@@ -1,0 +1,28 @@
+---
+- name: Get info from MicroK8S
+  become: true
+  ansible.builtin.shell: "/snap/bin/microk8s.config"
+  args:
+    executable: /bin/bash
+  register: config_info
+  changed_when: false
+- name: Get info to file
+  ansible.builtin.copy:
+    content: "{{ config_info.stdout }}"
+    dest: "{{ microk8s_local_config_path }}"
+    mode: "0750"
+  delegate_to: localhost
+- name: Change endpoint server to FQDN
+  ansible.builtin.lineinfile:
+    path: "{{ microk8s_local_config_path }}"
+    search_string: "    server: https:"
+    line: "    server: https://{{ microk8s_external_fqdn }}:16443"
+  delegate_to: localhost
+  when: "microk8s_external_fqdn is defined and microk8s_external_fqdn|length>0"
+- name: Change endpoint server to external IP
+  ansible.builtin.lineinfile:
+    path: "{{ microk8s_local_config_path }}"
+    search_string: "    server: https:"
+    line: "    server: https://{{ ansible_facts.ipify_public_ip }}:16443"
+  delegate_to: localhost
+  when: "microk8s_external_fqdn is undefined or microk8s_external_fqdn| length<2 "

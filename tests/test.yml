@@ -1,0 +1,6 @@
+---
+- name: MICROK8S | Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - microk8s

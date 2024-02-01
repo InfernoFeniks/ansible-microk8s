@@ -1,0 +1,8 @@
+---
+# defaults file for microk8s
+
+microk8s_inst_packages:
+  - snapd
+
+# group for microk8s
+microk8s_user_group: microk8s
