@@ -23,7 +23,7 @@ galaxy_info:
 
   galaxy_tags:
     - mikrok8s
-    - Kubernetes
+    - kubernetes
     - k8s
     - development
 
