@@ -36,7 +36,7 @@
   become: true
   ansible.builtin.shell: "/snap/bin/microk8s.status --wait-ready --format yaml"
   args:
-    executable: /bin/bash
+    executable: "{{ ansible_user_shell }}"
   changed_when: false
   register: microk8s_status
   failed_when:
