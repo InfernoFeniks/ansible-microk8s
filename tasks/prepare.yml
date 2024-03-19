@@ -6,9 +6,15 @@
 - name: Add the user to appending the group 'microk8s'
   become: true
   ansible.builtin.user:
-    name: "{{ microk8s_user_name }}"
+    name: "{{ ansible_user }}"
     groups: "{{ microk8s_user_group }}"
     append: true
+  register: add_to_group_result
+
+- name: Include reset connection tasks
+  ansible.builtin.include_tasks: reset_connection.yml
+  when: add_to_group_result.changed
+
 - name: Install snap
   become: true
   ansible.builtin.apt:

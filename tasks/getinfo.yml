@@ -1,9 +1,9 @@
 ---
 - name: Get info from MicroK8S
   become: true
-  ansible.builtin.shell: "/snap/bin/microk8s.config"
-  args:
-    executable: /bin/bash
+  ansible.builtin.command:
+    argv:
+      - /snap/bin/microk8s.config
   register: config_info
   changed_when: false
 - name: Get info to file

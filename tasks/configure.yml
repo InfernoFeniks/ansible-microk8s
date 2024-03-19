@@ -2,7 +2,10 @@
 - name: Get current addons state
   become: true
   ansible.builtin.command:
-    cmd: /snap/bin/microk8s.status --format yaml
+    argv:
+      - /snap/bin/microk8s.status
+      - --format
+      - yaml
   changed_when: false
   register: microk8s_status
   check_mode: false
@@ -12,10 +15,11 @@
     microk8s_status: "{{ microk8s_status.stdout | from_yaml }}"
 
 - name: Enable addons
-  ansible.builtin.shell: |
-    /snap/bin/microk8s.enable {{ item.name }}{% if microk8s_plugins[item.name] != true %}:{{ microk8s_plugins[item.name] }}{% endif %}
-  args:
-    executable: "{{ ansible_user_shell }}"
+  # become: true
+  ansible.builtin.command:
+    argv:
+      - /snap/bin/microk8s.enable
+      - "{{ item.name }}{% if microk8s_plugins[item.name] != true %}:{{ microk8s_plugins[item.name] }}{% endif %}"
   loop: "{{ microk8s_status.addons }}"
   loop_control:
     label: "{{ item.name }}"
@@ -27,11 +31,13 @@
   changed_when:
     - "'Enabling' in addons_work.stdout"
     - "'Installing' in addons_work.stdout"
+
 - name: Disable addons
-  ansible.builtin.shell: |
-    /snap/bin/microk8s.disable {{ item.name }}
-  args:
-    executable: "{{ ansible_user_shell }}"
+  become: true
+  ansible.builtin.command:
+    argv:
+      - /snap/bin/microk8s.enable
+      - "{{ item.name }}"
   loop: "{{ microk8s_status.addons }}"
   loop_control:
     label: "{{ item.name }}"
@@ -43,6 +49,7 @@
   changed_when:
     - "'Disabling' in addons_work_dis.stdout"
     - "'Uninstalling' in addons_work_dis.stdout"
+
 - name: Add external IP in microk8s config
   become: true
   ansible.builtin.lineinfile:
@@ -50,6 +57,7 @@
     insertbefore: "^#MOREIPS$"
     line: "IP.99 = {{ ansible_facts.ipify_public_ip }}"
   notify: Refresh certificates
+
 - name: Add external FQDN in microk8s config
   become: true
   ansible.builtin.lineinfile:
