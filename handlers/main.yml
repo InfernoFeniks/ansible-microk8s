@@ -12,3 +12,6 @@
   changed_when: false
   failed_when:
     - "'The CA certificates have been replaced' not in microk8s_cert.stdout"
+  retries: 5
+  delay: 20
+  until: "'The CA certificates have been replaced' in microk8s_cert.stdout"
